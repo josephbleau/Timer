@@ -42,10 +42,9 @@ public class Timer {
                 if (runTime >= targetRunTime) {
                     state = TimerState.FINISHED;
                 }
-
-            } else {
-                lastUpdate = System.currentTimeMillis();
-            }
+	   }
+           
+	   lastUpdate = System.currentTimeMillis();
         }
 
         return state;
