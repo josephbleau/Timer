@@ -71,7 +71,7 @@ public class TimerManager {
         }
 
         try {
-            int d,h,m,s = -1;
+            int d,h,m,s;
 
             d = timeString.lastIndexOf('d');
             h = timeString.lastIndexOf('h');
