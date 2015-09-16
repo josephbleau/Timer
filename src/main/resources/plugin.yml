@@ -1,0 +1,3 @@
+name: Timer
+main: com.josephbleau.bukkit.timer.TimerPlugin
+version: 1.0
