@@ -4,23 +4,41 @@ import com.josephbleau.bukkit.timer.exception.InvalidTimeStringException;
 import com.josephbleau.bukkit.timer.exception.TimerCannotRunWhenFinishedException;
 import com.josephbleau.bukkit.timer.exception.TimerNotFoundException;
 import com.josephbleau.bukkit.timer.exception.TimerWithNameExistsException;
+import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class TimerManager {
     private Map<String, Timer> timers = new HashMap<String, Timer>();
+    private Map<String, List<Player>> playerListeners = new HashMap<String, List<Player>>();
 
     public TimerManager() {
 
     }
 
+    /**
+     * Run update logic for all currently running timers and notify any players registered to listen
+     * to timer events.
+     */
     public void updateTimers() {
-        Iterator it = timers.entrySet().iterator();
-        while (it.hasNext()) {
+        for (Map.Entry<String, Timer> entry : timers.entrySet()) {
+            String timerName = entry.getKey();
+            Timer timer = entry.getValue();
 
+            if (timer.getState()  == TimerState.RUNNING) {
+                TimerState newState = timer.update();
+                notifyPlayerListeners(timerName, newState);
+            }
         }
+    }
+
+    /**
+     * Notify all listeners to a timer event (state change) that has occurred.
+     * @param timerName Name of the timer whose state has changed.
+     * @param timerState The timer's new state.
+     */
+    private void notifyPlayerListeners(String timerName, TimerState timerState) {
+
     }
 
     /**
