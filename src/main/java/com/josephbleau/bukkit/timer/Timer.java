@@ -50,4 +50,8 @@ public class Timer {
 
         return state;
     }
+
+    public TimerState getState() {
+        return state;
+    }
 }

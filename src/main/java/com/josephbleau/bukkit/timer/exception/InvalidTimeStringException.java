@@ -1,4 +1,6 @@
-package com.josephbleau.bukkit.timer;
+package com.josephbleau.bukkit.timer.exception;
+
+import com.josephbleau.bukkit.timer.TimerManager;
 
 /**
  * This exception is thrown when the caller attempts to create a timer with
