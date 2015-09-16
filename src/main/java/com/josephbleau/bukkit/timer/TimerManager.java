@@ -4,16 +4,25 @@ import com.josephbleau.bukkit.timer.exception.InvalidTimeStringException;
 import com.josephbleau.bukkit.timer.exception.TimerCannotRunWhenFinishedException;
 import com.josephbleau.bukkit.timer.exception.TimerNotFoundException;
 import com.josephbleau.bukkit.timer.exception.TimerWithNameExistsException;
+import com.josephbleau.bukkit.timer.time.SystemTimeProvider;
+import com.josephbleau.bukkit.timer.time.TimeProvider;
 import org.bukkit.entity.Player;
 
 import java.util.*;
 
 public class TimerManager {
+    private TimeProvider timeProvider = new SystemTimeProvider();
+
     private Map<String, Timer> timers = new HashMap<String, Timer>();
     private Map<String, List<Player>> playerListeners = new HashMap<String, List<Player>>();
 
     public TimerManager() {
 
+    }
+
+    public TimerManager(TimeProvider timeProvider) {
+        this();
+        this.timeProvider = timeProvider;
     }
 
     /**
@@ -83,7 +92,7 @@ public class TimerManager {
      * @return The target time in milliseconds.
      * @throws InvalidTimeStringException
      */
-    private long parseTimeString(String timeString) throws InvalidTimeStringException {
+    public long parseTimeString(String timeString) throws InvalidTimeStringException {
         if(timeString == null || timeString.isEmpty()) {
             throw new InvalidTimeStringException();
         }
@@ -100,7 +109,7 @@ public class TimerManager {
             boolean timeSymbolsNotFound = d == -1 && h == -1 && m == -1 && s == -1;
             if (timeSymbolsNotFound) {
                 long time = Long.parseLong(timeString);
-                return System.currentTimeMillis() + secondsToMilliseconds(time);
+                return timeProvider.getTimeInMilliseconds() + secondsToMilliseconds(time);
             }
 
             long time = 0;
@@ -110,35 +119,35 @@ public class TimerManager {
                 String dayString = timeString.substring(currentPosition, d);
                 long days = Long.parseLong(dayString);
                 time += daysToMilliseconds(days);
-                currentPosition = d;
+                currentPosition = d+1;
             }
 
             if (h != -1) {
                 String hourString = timeString.substring(currentPosition, h);
                 long hours = Long.parseLong(hourString);
                 time += hoursToMilliSeconds(hours);
-                currentPosition = h;
+                currentPosition = h+1;
             }
 
             if (m != -1) {
                 String minuteString = timeString.substring(currentPosition, m);
                 long minutes = Long.parseLong(minuteString);
                 time += minutesToMilliseconds(minutes);
-                currentPosition = m;
+                currentPosition = m+1;
             }
 
             if (s != -1) {
                 String secondString = timeString.substring(currentPosition, s);
                 long seconds = Long.parseLong(secondString);
                 time += secondsToMilliseconds(seconds);
-                currentPosition = s;
+                currentPosition = s+1;
             }
 
             if (currentPosition < timeString.length()-1) {
                 throw new InvalidTimeStringException();
             }
 
-            return time;
+            return timeProvider.getTimeInMilliseconds() + time;
         } catch (NumberFormatException e) {
             throw new InvalidTimeStringException();
         }

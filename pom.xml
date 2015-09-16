@@ -6,8 +6,8 @@
 
     <groupId>com.josephbleau.bukkit</groupId>
     <artifactId>timer</artifactId>
+    <packaging>pom</packaging>
     <version>1.0</version>
-
 
     <repositories>
         <repository>
@@ -23,6 +23,12 @@
             <version>1.7.9-R0.2</version>
             <type>jar</type>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.9.6</version>
         </dependency>
     </dependencies>
 
