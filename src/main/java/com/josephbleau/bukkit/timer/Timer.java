@@ -32,7 +32,7 @@ public class Timer {
     }
 
     public TimerState update() {
-        if (state != TimerState.NOT_RUNNING && state != TimerState.FINISHED) {
+        if (state == TimerState.RUNNING) {
             if (lastUpdate != -1) {
                 long currentTime = System.currentTimeMillis();
                 long timeDelta = currentTime - lastUpdate;
@@ -53,5 +53,13 @@ public class Timer {
 
     public TimerState getState() {
         return state;
+    }
+
+    public long getRunTime() {
+        return runTime;
+    }
+
+    public long getTargetRunTime() {
+        return targetRunTime;
     }
 }

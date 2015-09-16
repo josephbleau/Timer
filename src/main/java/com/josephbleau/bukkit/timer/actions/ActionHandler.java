@@ -1,15 +1,26 @@
 package com.josephbleau.bukkit.timer.actions;
 
+import com.josephbleau.bukkit.timer.TimerManager;
 import org.bukkit.command.CommandSender;
 
 import java.util.logging.Logger;
 
 public abstract class ActionHandler {
-    protected Logger logger;
+    private Logger logger;
+    private TimerManager timerManager;
 
-    public ActionHandler(Logger logger) {
+    public ActionHandler(Logger logger, TimerManager timerManager) {
         this.logger = logger;
+        this.timerManager = timerManager;
     }
 
     public abstract boolean handle(CommandSender commandSender, String[] args);
+
+    public Logger getLogger() {
+        return logger;
+    }
+
+    public TimerManager getTimerManager() {
+        return timerManager;
+    }
 }

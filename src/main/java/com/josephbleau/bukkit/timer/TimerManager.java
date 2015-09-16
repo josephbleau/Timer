@@ -4,25 +4,18 @@ import com.josephbleau.bukkit.timer.exception.InvalidTimeStringException;
 import com.josephbleau.bukkit.timer.exception.TimerCannotRunWhenFinishedException;
 import com.josephbleau.bukkit.timer.exception.TimerNotFoundException;
 import com.josephbleau.bukkit.timer.exception.TimerWithNameExistsException;
-import com.josephbleau.bukkit.timer.time.SystemTimeProvider;
-import com.josephbleau.bukkit.timer.time.TimeProvider;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TimerManager {
-    private TimeProvider timeProvider = new SystemTimeProvider();
-
     private Map<String, Timer> timers = new HashMap<String, Timer>();
     private Map<String, List<Player>> playerListeners = new HashMap<String, List<Player>>();
 
     public TimerManager() {
 
-    }
-
-    public TimerManager(TimeProvider timeProvider) {
-        this();
-        this.timeProvider = timeProvider;
     }
 
     /**
@@ -109,7 +102,7 @@ public class TimerManager {
             boolean timeSymbolsNotFound = d == -1 && h == -1 && m == -1 && s == -1;
             if (timeSymbolsNotFound) {
                 long time = Long.parseLong(timeString);
-                return timeProvider.getTimeInMilliseconds() + secondsToMilliseconds(time);
+                return secondsToMilliseconds(time);
             }
 
             long time = 0;
@@ -147,7 +140,7 @@ public class TimerManager {
                 throw new InvalidTimeStringException();
             }
 
-            return timeProvider.getTimeInMilliseconds() + time;
+            return time;
         } catch (NumberFormatException e) {
             throw new InvalidTimeStringException();
         }
@@ -167,5 +160,9 @@ public class TimerManager {
 
     private long daysToMilliseconds(long days) {
         return hoursToMilliSeconds(days * 24);
+    }
+
+    public Map<String, Timer> getTimers() {
+        return timers;
     }
 }

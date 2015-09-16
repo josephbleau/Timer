@@ -3,7 +3,6 @@ import com.josephbleau.bukkit.timer.exception.InvalidTimeStringException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import time.FixedTimeProvider;
 
 @Test
 public class TimerManagerTest {
@@ -16,7 +15,7 @@ public class TimerManagerTest {
 
     @BeforeMethod
     public void beforeMethod() {
-        timerManager = new TimerManager(new FixedTimeProvider());
+        timerManager = new TimerManager();
     }
 
     @Test
