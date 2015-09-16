@@ -1,3 +1,9 @@
 name: Timer
 main: com.josephbleau.bukkit.timer.TimerPlugin
 version: 1.0
+commands:
+  timer:
+    description: Control and monitor timers.
+    usage: /<timer> <action> [parameters]
+    permission: Timer.basic
+    permission-message: You don't have permission.
