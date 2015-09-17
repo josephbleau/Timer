@@ -34,7 +34,7 @@ public class ShowHandler extends ActionHandler{
 
         try {
             String prettyTimeString = getTimerManager().getPrettyTimeLeft(timerName);
-            player.sendMessage("This ability is still on cooldown! Time until available: " + prettyTimeString);
+            player.sendMessage("§dThis ability is still on cooldown! Time until available: " + prettyTimeString);
         } catch (TimerNotFoundException e) {
             commandSender.sendMessage("Timer by the name of '" + timerName + "' could not be found.");
             return false;

@@ -22,14 +22,18 @@ public class ListHandler extends ActionHandler {
         commandSender.sendMessage("Timers:");
         Map<String, Timer> timers = getTimerManager().getTimers();
 
-        for(Map.Entry<String, Timer> entry : timers.entrySet()) {
-            String timerName = entry.getKey();
-            Timer timer = entry.getValue();
+        if (timers.size() > 0) {
+            for (Map.Entry<String, Timer> entry : timers.entrySet()) {
+                String timerName = entry.getKey();
+                Timer timer = entry.getValue();
 
-            String infoString = "    " + timerName + ": " + timer.getState().toString() +
-                                " " + getTimerManager().getPrettyTimeLeft(timer);
+                String infoString = "    " + timerName + ": " + timer.getState().toString() +
+                        " " + getTimerManager().getPrettyTimeLeft(timer);
 
-            commandSender.sendMessage(infoString);
+                commandSender.sendMessage(infoString);
+            }
+        } else {
+            commandSender.sendMessage("    There are no timers.");
         }
 
         return true;
