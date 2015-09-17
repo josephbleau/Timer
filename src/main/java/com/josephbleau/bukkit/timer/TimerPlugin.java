@@ -1,9 +1,6 @@
 package com.josephbleau.bukkit.timer;
 
-import com.josephbleau.bukkit.timer.actions.ActionHandler;
-import com.josephbleau.bukkit.timer.actions.AddHandler;
-import com.josephbleau.bukkit.timer.actions.ListHandler;
-import com.josephbleau.bukkit.timer.actions.StopHandler;
+import com.josephbleau.bukkit.timer.actions.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -44,6 +41,7 @@ public final class TimerPlugin extends JavaPlugin {
         actionHandlers.put("add", new AddHandler(getLogger(), timerManager));
         actionHandlers.put("list", new ListHandler(getLogger(), timerManager));
         actionHandlers.put("stop", new StopHandler(getLogger(), timerManager));
+        actionHandlers.put("start", new StartHandler(getLogger(), timerManager));
     }
 
     @Override
