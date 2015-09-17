@@ -7,6 +7,11 @@ import org.bukkit.command.CommandSender;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * Handle /timer list.
+ *
+ * Displays a list of all existing timers.
+ */
 public class ListHandler extends ActionHandler {
 
     public ListHandler(Logger logger, TimerManager timerManager) {

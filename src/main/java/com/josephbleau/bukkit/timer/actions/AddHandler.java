@@ -7,6 +7,11 @@ import org.bukkit.command.CommandSender;
 
 import java.util.logging.Logger;
 
+/**
+ * Handle /timer add [timer name] [time string].
+ *
+ * Add a new timer by the given name and with a total running time of the given time string.
+ */
 public class AddHandler extends ActionHandler {
 
     public AddHandler(Logger logger, TimerManager timerManager) {

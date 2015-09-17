@@ -4,15 +4,12 @@ import com.josephbleau.bukkit.timer.exception.InvalidTimeStringException;
 import com.josephbleau.bukkit.timer.exception.TimerInvalidStateTransitionException;
 import com.josephbleau.bukkit.timer.exception.TimerNotFoundException;
 import com.josephbleau.bukkit.timer.exception.TimerWithNameExistsException;
-import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class TimerManager {
     private Map<String, Timer> timers = new HashMap<String, Timer>();
-    private Map<String, List<Player>> playerListeners = new HashMap<String, List<Player>>();
 
     public TimerManager() {}
 
@@ -22,23 +19,12 @@ public class TimerManager {
      */
     public void updateTimers() {
         for (Map.Entry<String, Timer> entry : timers.entrySet()) {
-            String timerName = entry.getKey();
             Timer timer = entry.getValue();
 
-            if (timer.getState()  == TimerState.RUNNING) {
-                TimerState newState = timer.update();
-                notifyPlayerListeners(timerName, newState);
+            if (timer.getState()  == TimerState.running) {
+                timer.update();
             }
         }
-    }
-
-    /**
-     * Notify all listeners to a timer event (state change) that has occurred.
-     * @param timerName Name of the timer whose state has changed.
-     * @param timerState The timer's new state.
-     */
-    private void notifyPlayerListeners(String timerName, TimerState timerState) {
-
     }
 
     /**
@@ -62,6 +48,11 @@ public class TimerManager {
         return timer;
     }
 
+    /**
+     * Remove a timer.
+     * @param timerName Name of the timer to remove.
+     * @throws TimerNotFoundException when no timer by the given name exists.
+     */
     public void deleteTimer(String timerName) throws TimerNotFoundException {
         if (timers.get(timerName) == null) {
             throw new TimerNotFoundException();
@@ -70,9 +61,15 @@ public class TimerManager {
         timers.remove(timerName);
     }
 
+    /**
+     * Run the timer by the given name.
+     * @param timerName Name of the timer that is being ran.
+     * @throws TimerInvalidStateTransitionException when the timer is already running, or is finished.
+     * @throws TimerNotFoundException when no timer by the given name exists.
+     */
     public void runTimer(String timerName) throws TimerInvalidStateTransitionException, TimerNotFoundException {
         if (timers.get(timerName) != null) {
-            if (timers.get(timerName).getState() != TimerState.NOT_RUNNING) {
+            if (timers.get(timerName).getState() != TimerState.notRunning) {
                 throw new TimerInvalidStateTransitionException();
             }
 
@@ -82,9 +79,15 @@ public class TimerManager {
         }
     }
 
+    /**
+     * Stop a timer by the given name.
+     * @param timerName Name of the timer that is being stopped.
+     * @throws TimerInvalidStateTransitionException when the timer is already finished, or is not running.
+     * @throws TimerNotFoundException when no timer by the given name exists.
+     */
     public void stopTimer(String timerName) throws TimerInvalidStateTransitionException, TimerNotFoundException {
         if (timers.get(timerName) != null) {
-            if (timers.get(timerName).getState() != TimerState.RUNNING) {
+            if (timers.get(timerName).getState() != TimerState.running) {
                 throw new TimerInvalidStateTransitionException();
             }
 
@@ -167,6 +170,12 @@ public class TimerManager {
         }
     }
 
+    /**
+     * Converts the time remaining in a timer to a pretty-printed string that follows the format
+     * of time strings used by {@link TimerManager#createTimer(String, String, boolean)}.
+     * @param timer Timer whose remaining time will be pretty-printed.
+     * @return Time string.
+     */
     public String getPrettyTimeLeft(Timer timer) {
         long completeTime = timer.getTargetRunTime() - timer.getRunTime();
 
@@ -201,6 +210,13 @@ public class TimerManager {
         return timeString;
     }
 
+    /**
+     * Converts the time remaining in a timer to a pretty-printed string that follows the format
+     * of time strings used by {@link TimerManager#createTimer(String, String, boolean)}.
+     * @param timerName Name of the timer whose remaining time will be pretty-printed.
+     * @throws TimerNotFoundException when a timer by the given name cannot be found.
+     * @return Time string.
+     */
     public String getPrettyTimeLeft(String timerName) throws TimerNotFoundException {
         if (timers.get(timerName) == null) {
             throw new TimerNotFoundException();

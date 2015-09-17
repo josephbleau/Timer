@@ -7,6 +7,11 @@ import org.bukkit.command.CommandSender;
 
 import java.util.logging.Logger;
 
+/**
+ * Handle /timer start [timer name].
+ *
+ * Run the timer by the given name.
+ */
 public class StartHandler extends ActionHandler {
 
     public StartHandler(Logger logger, TimerManager timerManager) {

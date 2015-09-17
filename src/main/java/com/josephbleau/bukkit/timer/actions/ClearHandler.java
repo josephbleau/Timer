@@ -6,6 +6,11 @@ import org.bukkit.command.CommandSender;
 
 import java.util.logging.Logger;
 
+/**
+ * Handle /timer clear [timer name].
+ *
+ * Remove the timer by the given name.
+ */
 public class ClearHandler extends ActionHandler {
     public ClearHandler(Logger logger, TimerManager timerManager) {
         super(logger, timerManager);

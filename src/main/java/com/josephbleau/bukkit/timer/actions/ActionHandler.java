@@ -5,6 +5,9 @@ import org.bukkit.command.CommandSender;
 
 import java.util.logging.Logger;
 
+/**
+ * Base action handler for parsed commands.
+ */
 public abstract class ActionHandler {
     private Logger logger;
     private TimerManager timerManager;

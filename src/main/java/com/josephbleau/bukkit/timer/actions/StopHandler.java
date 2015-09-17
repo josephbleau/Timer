@@ -7,6 +7,11 @@ import org.bukkit.command.CommandSender;
 
 import java.util.logging.Logger;
 
+/**
+ * Handle /timer stop [timer name].
+ *
+ * Stop the timer by the given name.
+ */
 public class StopHandler extends ActionHandler {
 
     public StopHandler(Logger logger, TimerManager timerManager) {
@@ -22,7 +27,7 @@ public class StopHandler extends ActionHandler {
         String timerName = args[1];
 
         try {
-            getTimerManager().stopTimer(timerName );
+            getTimerManager().stopTimer(timerName);
         } catch(TimerNotFoundException e) {
             commandSender.sendMessage("Timer by the name of '"+timerName+"' could not be found.");
             return false;

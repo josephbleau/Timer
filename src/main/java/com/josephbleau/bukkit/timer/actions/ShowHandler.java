@@ -8,6 +8,11 @@ import org.bukkit.entity.Player;
 
 import java.util.logging.Logger;
 
+/**
+ * Handle /timer show [player name] [timer name].
+ *
+ * Send a message to the given player with the status of the named timer.
+ */
 public class ShowHandler extends ActionHandler{
     private Server server;
 
