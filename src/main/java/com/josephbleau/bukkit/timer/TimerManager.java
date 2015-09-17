@@ -62,6 +62,14 @@ public class TimerManager {
         return timer;
     }
 
+    public void deleteTimer(String timerName) throws TimerNotFoundException {
+        if (timers.get(timerName) == null) {
+            throw new TimerNotFoundException();
+        }
+
+        timers.remove(timerName);
+    }
+
     public void runTimer(String timerName) throws TimerInvalidStateTransitionException, TimerNotFoundException {
         if (timers.get(timerName) != null) {
             if (timers.get(timerName).getState() != TimerState.NOT_RUNNING) {
@@ -167,9 +175,9 @@ public class TimerManager {
         d = (int) Math.floor(completeTime / daysToMilliseconds(1));
         completeTime -= daysToMilliseconds((long)d);
         h = (int) Math.floor(completeTime / hoursToMilliseconds(1));
-        completeTime -= hoursToMilliseconds((long)h);
+        completeTime -= hoursToMilliseconds((long) h);
         m = (int) Math.floor(completeTime / minutesToMilliseconds(1));
-        completeTime -= minutesToMilliseconds((long)m);
+        completeTime -= minutesToMilliseconds((long) m);
         s = (int) Math.floor(completeTime / secondsToMilliseconds(1));
 
         String timeString = "";

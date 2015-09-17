@@ -41,6 +41,7 @@ public final class TimerPlugin extends JavaPlugin {
         actionHandlers.put("stop", new StopHandler(getLogger(), timerManager));
         actionHandlers.put("start", new StartHandler(getLogger(), timerManager));
         actionHandlers.put("show", new ShowHandler(getLogger(), timerManager, getServer()));
+        actionHandlers.put("clear", new ClearHandler(getLogger(), timerManager));
     }
 
     @Override
