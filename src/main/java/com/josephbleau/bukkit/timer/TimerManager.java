@@ -1,7 +1,7 @@
 package com.josephbleau.bukkit.timer;
 
 import com.josephbleau.bukkit.timer.exception.InvalidTimeStringException;
-import com.josephbleau.bukkit.timer.exception.TimerCannotRunWhenFinishedException;
+import com.josephbleau.bukkit.timer.exception.TimerInvalidStateTransitionException;
 import com.josephbleau.bukkit.timer.exception.TimerNotFoundException;
 import com.josephbleau.bukkit.timer.exception.TimerWithNameExistsException;
 import org.bukkit.entity.Player;
@@ -14,9 +14,7 @@ public class TimerManager {
     private Map<String, Timer> timers = new HashMap<String, Timer>();
     private Map<String, List<Player>> playerListeners = new HashMap<String, List<Player>>();
 
-    public TimerManager() {
-
-    }
+    public TimerManager() {}
 
     /**
      * Run update logic for all currently running timers and notify any players registered to listen
@@ -61,13 +59,25 @@ public class TimerManager {
         timers.put(timerName, timer);
     }
 
-    public void runTimer(String timerName) throws TimerCannotRunWhenFinishedException, TimerNotFoundException {
+    public void runTimer(String timerName) throws TimerInvalidStateTransitionException, TimerNotFoundException {
         if (timers.get(timerName) != null) {
-            if (timers.get(timerName).getState() == TimerState.FINISHED) {
-                throw new TimerCannotRunWhenFinishedException();
+            if (timers.get(timerName).getState() != TimerState.NOT_RUNNING) {
+                throw new TimerInvalidStateTransitionException();
             }
 
             timers.get(timerName).run();
+        } else {
+            throw new TimerNotFoundException();
+        }
+    }
+
+    public void stopTimer(String timerName) throws TimerInvalidStateTransitionException, TimerNotFoundException {
+        if (timers.get(timerName) != null) {
+            if (timers.get(timerName).getState() != TimerState.RUNNING) {
+                throw new TimerInvalidStateTransitionException();
+            }
+
+            timers.get(timerName).stop();
         } else {
             throw new TimerNotFoundException();
         }
