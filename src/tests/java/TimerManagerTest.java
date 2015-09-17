@@ -1,5 +1,7 @@
+import com.josephbleau.bukkit.timer.Timer;
 import com.josephbleau.bukkit.timer.TimerManager;
 import com.josephbleau.bukkit.timer.exception.InvalidTimeStringException;
+import com.josephbleau.bukkit.timer.exception.TimerWithNameExistsException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -16,6 +18,32 @@ public class TimerManagerTest {
     @BeforeMethod
     public void beforeMethod() {
         timerManager = new TimerManager();
+    }
+
+    @Test
+    public void getPrettyTimeLeft_oneDayTimer_printCorrectly() throws TimerWithNameExistsException, InvalidTimeStringException {
+        // Given
+        String timeString = "1d";
+        Timer timer = timerManager.createTimer("test", timeString, false);
+
+        // When
+        String returnValue = timerManager.getPrettyTimeLeft(timer);
+
+        // Then
+        Assert.assertEquals(timeString, returnValue);
+    }
+
+    @Test
+    public void getPrettyTimeLeft_complexTimer_printCorrectly() throws TimerWithNameExistsException, InvalidTimeStringException {
+        // Given
+        String timeString = "1d23h50m20s";
+        Timer timer = timerManager.createTimer("test", timeString, false);
+
+        // When
+        String returnValue = timerManager.getPrettyTimeLeft(timer);
+
+        // Then
+        Assert.assertEquals(timeString, returnValue);
     }
 
     @Test

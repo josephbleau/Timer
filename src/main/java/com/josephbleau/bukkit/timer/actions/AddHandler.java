@@ -24,14 +24,14 @@ public class AddHandler extends ActionHandler {
         try {
             getTimerManager().createTimer(timerName, timeString, true);
         } catch (TimerWithNameExistsException e) {
-            getLogger().warning("A timer by the name '"+timerName+"' already exists.");
+            commandSender.sendMessage("A timer by the name '"+timerName+"' already exists.");
             return false;
         } catch (InvalidTimeStringException e) {
-            getLogger().warning("The time string '"+timeString+"' is not well-formed.");
+            commandSender.sendMessage("The time string '"+timeString+"' is not well-formed.");
             return false;
         }
 
-        getLogger().info("A timer by the name of '"+timerName+"' was created.");
+        commandSender.sendMessage("A timer by the name of '"+timerName+"' was created.");
         return true;
     }
 }

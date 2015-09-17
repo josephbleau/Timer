@@ -24,10 +24,10 @@ public class StopHandler extends ActionHandler {
         try {
             getTimerManager().stopTimer(timerName );
         } catch(TimerNotFoundException e) {
-            getLogger().info("Timer by the name of '"+timerName+"' could not be found.");
+            commandSender.sendMessage("Timer by the name of '"+timerName+"' could not be found.");
             return false;
         } catch (TimerInvalidStateTransitionException e) {
-            getLogger().info("Timer by the name of '"+timerName+"' is already stopped or is finished.");
+            commandSender.sendMessage("Timer by the name of '"+timerName+"' is already stopped or is finished.");
             return false;
         }
 

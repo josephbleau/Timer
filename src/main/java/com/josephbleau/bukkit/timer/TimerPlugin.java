@@ -33,8 +33,6 @@ public final class TimerPlugin extends JavaPlugin {
         initializeActionHandlers();
         stopTimerThread = false;
         timerUpdateThread.start();
-
-        getLogger().info("Timer plugin is enabled.");
     }
 
     private void initializeActionHandlers() {
@@ -42,12 +40,12 @@ public final class TimerPlugin extends JavaPlugin {
         actionHandlers.put("list", new ListHandler(getLogger(), timerManager));
         actionHandlers.put("stop", new StopHandler(getLogger(), timerManager));
         actionHandlers.put("start", new StartHandler(getLogger(), timerManager));
+        actionHandlers.put("show", new ShowHandler(getLogger(), timerManager, getServer()));
     }
 
     @Override
     public void onDisable() {
         stopTimerThread = true;
-        getLogger().info("Timer plugin was disabled.");
     }
 
     @Override

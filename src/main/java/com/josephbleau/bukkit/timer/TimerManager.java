@@ -49,14 +49,17 @@ public class TimerManager {
      *                at a later point by calling {@link TimerManager#runTimer(String)}.
      * @throws TimerWithNameExistsException If a timer by the given timerName already exists this exception is thrown.
      * @throws InvalidTimeStringException If the timer string provided is malformed this exception is thrown.
+     * @return The created timer.
      */
-    public void createTimer(String timerName, String timeString, boolean running) throws TimerWithNameExistsException, InvalidTimeStringException {
+    public Timer createTimer(String timerName, String timeString, boolean running) throws TimerWithNameExistsException, InvalidTimeStringException {
         if (timers.get(timerName) != null) {
             throw new TimerWithNameExistsException();
         }
 
         Timer timer = new Timer(parseTimeString(timeString), running);
         timers.put(timerName, timer);
+
+        return timer;
     }
 
     public void runTimer(String timerName) throws TimerInvalidStateTransitionException, TimerNotFoundException {
@@ -128,7 +131,7 @@ public class TimerManager {
             if (h != -1) {
                 String hourString = timeString.substring(currentPosition, h);
                 long hours = Long.parseLong(hourString);
-                time += hoursToMilliSeconds(hours);
+                time += hoursToMilliseconds(hours);
                 currentPosition = h+1;
             }
 
@@ -156,6 +159,48 @@ public class TimerManager {
         }
     }
 
+    public String getPrettyTimeLeft(Timer timer) {
+        long completeTime = timer.getTargetRunTime() - timer.getRunTime();
+
+        int  d,h,m,s;
+
+        d = (int) Math.floor(completeTime / daysToMilliseconds(1));
+        completeTime -= daysToMilliseconds((long)d);
+        h = (int) Math.floor(completeTime / hoursToMilliseconds(1));
+        completeTime -= hoursToMilliseconds((long)h);
+        m = (int) Math.floor(completeTime / minutesToMilliseconds(1));
+        completeTime -= minutesToMilliseconds((long)m);
+        s = (int) Math.floor(completeTime / secondsToMilliseconds(1));
+
+        String timeString = "";
+
+        if (d > 0) {
+            timeString += d + "d";
+        }
+
+        if (h > 0) {
+            timeString += h + "h";
+        }
+
+        if (m > 0) {
+            timeString += m + "m";
+        }
+
+        if (s > 0) {
+            timeString += s + "s";
+        }
+
+        return timeString;
+    }
+
+    public String getPrettyTimeLeft(String timerName) throws TimerNotFoundException {
+        if (timers.get(timerName) == null) {
+            throw new TimerNotFoundException();
+        }
+
+        return getPrettyTimeLeft(timers.get(timerName));
+    }
+
     private long secondsToMilliseconds(long seconds) {
         return seconds * 1000;
     }
@@ -164,12 +209,12 @@ public class TimerManager {
         return secondsToMilliseconds(minutes * 60);
     }
 
-    private long hoursToMilliSeconds(long hours) {
+    private long hoursToMilliseconds(long hours) {
         return minutesToMilliseconds(hours * 60);
     }
 
     private long daysToMilliseconds(long days) {
-        return hoursToMilliSeconds(days * 24);
+        return hoursToMilliseconds(days * 24);
     }
 
     public Map<String, Timer> getTimers() {

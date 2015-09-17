@@ -19,17 +19,17 @@ public class ListHandler extends ActionHandler {
             return false;
         }
 
-        getLogger().info("TIMER LISTING:");
+        commandSender.sendMessage("Timers:");
         Map<String, Timer> timers = getTimerManager().getTimers();
 
         for(Map.Entry<String, Timer> entry : timers.entrySet()) {
             String timerName = entry.getKey();
             Timer timer = entry.getValue();
 
-            String infoString = "\t" + timerName + "\t" + timer.getState().toString() + "\t" +
-                                timer.getRunTime() + "\t" + timer.getTargetRunTime();
+            String infoString = "    " + timerName + ": " + timer.getState().toString() +
+                                " " + getTimerManager().getPrettyTimeLeft(timer);
 
-            getLogger().info(infoString);
+            commandSender.sendMessage(infoString);
         }
 
         return true;
