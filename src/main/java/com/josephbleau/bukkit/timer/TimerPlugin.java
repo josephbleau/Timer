@@ -31,17 +31,18 @@ public final class TimerPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         initializeActionHandlers();
+
         stopTimerThread = false;
         timerUpdateThread.start();
     }
 
     private void initializeActionHandlers() {
-        actionHandlers.put("add", new AddHandler(getLogger(), timerManager));
-        actionHandlers.put("list", new ListHandler(getLogger(), timerManager));
-        actionHandlers.put("stop", new StopHandler(getLogger(), timerManager));
-        actionHandlers.put("start", new StartHandler(getLogger(), timerManager));
-        actionHandlers.put("show", new ShowHandler(getLogger(), timerManager, getServer()));
-        actionHandlers.put("clear", new ClearHandler(getLogger(), timerManager));
+        actionHandlers.put("add", new AddHandler(getLogger(), getConfig(), timerManager));
+        actionHandlers.put("list", new ListHandler(getLogger(), getConfig(), timerManager));
+        actionHandlers.put("stop", new StopHandler(getLogger(), getConfig(), timerManager));
+        actionHandlers.put("start", new StartHandler(getLogger(), getConfig(), timerManager));
+        actionHandlers.put("show", new ShowHandler(getLogger(), getConfig(), timerManager, getServer()));
+        actionHandlers.put("clear", new ClearHandler(getLogger(), getConfig(), timerManager));
     }
 
     @Override

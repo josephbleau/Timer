@@ -4,6 +4,7 @@ import com.josephbleau.bukkit.timer.TimerManager;
 import com.josephbleau.bukkit.timer.exception.InvalidTimeStringException;
 import com.josephbleau.bukkit.timer.exception.TimerWithNameExistsException;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.Configuration;
 
 import java.util.logging.Logger;
 
@@ -14,11 +15,17 @@ import java.util.logging.Logger;
  */
 public class AddHandler extends ActionHandler {
 
-    public AddHandler(Logger logger, TimerManager timerManager) {
-        super(logger, timerManager);
+    public AddHandler(Logger logger, Configuration configuration, TimerManager timerManager) {
+        super(logger, configuration, timerManager);
     }
 
+    private final String permissionsName = "add";
+
     public boolean handle(CommandSender commandSender, String[] args) {
+        if(!commandSender.hasPermission(getFullPermissionsName())) {
+            return false;
+        }
+
         if(args.length != 3) {
             return false;
         }
@@ -38,5 +45,10 @@ public class AddHandler extends ActionHandler {
 
         commandSender.sendMessage("A timer by the name of '"+timerName+"' was created.");
         return true;
+    }
+
+    @Override
+    protected String getActionPermissionsName() {
+        return permissionsName;
     }
 }

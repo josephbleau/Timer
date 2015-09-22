@@ -3,6 +3,7 @@ package com.josephbleau.bukkit.timer.actions;
 import com.josephbleau.bukkit.timer.TimerManager;
 import com.josephbleau.bukkit.timer.exception.TimerNotFoundException;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.Configuration;
 
 import java.util.logging.Logger;
 
@@ -12,12 +13,18 @@ import java.util.logging.Logger;
  * Remove the timer by the given name.
  */
 public class ClearHandler extends ActionHandler {
-    public ClearHandler(Logger logger, TimerManager timerManager) {
-        super(logger, timerManager);
+    public ClearHandler(Logger logger, Configuration configuration, TimerManager timerManager) {
+        super(logger, configuration, timerManager);
     }
+
+    private final String permissionsName = "clear";
 
     @Override
     public boolean handle(CommandSender commandSender, String[] args) {
+        if(!commandSender.hasPermission(getFullPermissionsName())) {
+            return false;
+        }
+
         if (args.length != 2) {
             return false;
         }
@@ -33,5 +40,10 @@ public class ClearHandler extends ActionHandler {
 
         commandSender.sendMessage("Timer by the name of '" + timerName + "' has been removed.");
         return true;
+    }
+
+    @Override
+    protected String getActionPermissionsName() {
+        return permissionsName;
     }
 }

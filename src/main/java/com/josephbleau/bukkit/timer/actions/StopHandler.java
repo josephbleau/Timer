@@ -4,6 +4,7 @@ import com.josephbleau.bukkit.timer.TimerManager;
 import com.josephbleau.bukkit.timer.exception.TimerInvalidStateTransitionException;
 import com.josephbleau.bukkit.timer.exception.TimerNotFoundException;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.Configuration;
 
 import java.util.logging.Logger;
 
@@ -14,12 +15,18 @@ import java.util.logging.Logger;
  */
 public class StopHandler extends ActionHandler {
 
-    public StopHandler(Logger logger, TimerManager timerManager) {
-        super(logger, timerManager);
+    public StopHandler(Logger logger, Configuration configuration, TimerManager timerManager) {
+        super(logger, configuration, timerManager);
     }
+
+    private final String permissionsName = "stop";
 
     @Override
     public boolean handle(CommandSender commandSender, String[] args) {
+        if(!commandSender.hasPermission(getFullPermissionsName())) {
+            return false;
+        }
+
         if (args.length != 2) {
             return false;
         }
@@ -37,5 +44,10 @@ public class StopHandler extends ActionHandler {
         }
 
         return true;
+    }
+
+    @Override
+    protected String getActionPermissionsName() {
+        return permissionsName;
     }
 }

@@ -3,6 +3,7 @@ package com.josephbleau.bukkit.timer.actions;
 import com.josephbleau.bukkit.timer.Timer;
 import com.josephbleau.bukkit.timer.TimerManager;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.Configuration;
 
 import java.util.Map;
 import java.util.logging.Logger;
@@ -14,12 +15,18 @@ import java.util.logging.Logger;
  */
 public class ListHandler extends ActionHandler {
 
-    public ListHandler(Logger logger, TimerManager timerManager) {
-        super(logger, timerManager);
+    public ListHandler(Logger logger, Configuration configuration, TimerManager timerManager) {
+        super(logger, configuration, timerManager);
     }
+
+    private final String permissionsName = "list";
 
     @Override
     public boolean handle(CommandSender commandSender, String[] args) {
+        if(!commandSender.hasPermission(getFullPermissionsName())) {
+            return false;
+        }
+
         if (args.length != 1) {
             return false;
         }
@@ -42,5 +49,10 @@ public class ListHandler extends ActionHandler {
         }
 
         return true;
+    }
+
+    @Override
+    protected String getActionPermissionsName() {
+        return permissionsName;
     }
 }

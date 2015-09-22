@@ -1,9 +1,8 @@
 name: Timer
 main: com.josephbleau.bukkit.timer.TimerPlugin
 version: 1.0
+description: Create, remove, and manager timers kept by the server.
 commands:
   timer:
     description: Control and monitor timers.
-    usage: /<timer> <action> [parameters]
-    permission: Timer.basic
-    permission-message: You don't have permission.
+    usage: /timer [add|clear|start|stop|list|show] <player> <time string>
