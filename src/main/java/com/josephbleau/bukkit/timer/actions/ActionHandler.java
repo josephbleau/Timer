@@ -39,6 +39,6 @@ public abstract class ActionHandler {
     protected abstract String getActionPermissionsName();
 
     protected String getFullPermissionsName() {
-        return getRootPermissionsName() + getActionPermissionsName();
+        return getRootPermissionsName() + "." + getActionPermissionsName();
     }
 }
